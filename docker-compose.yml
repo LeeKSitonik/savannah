@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+web:
+build:
+context: .
+dockerfile: Dockerfile
+container_name: savannah-clinic-api
+ports:
+- "8080:8080"
+environment:
+- DATA_DIR=/var/data
+volumes:
+# Persists the SQLite database locally in a ./data folder
+- ./data:/var/data
+restart: unless-stopped
