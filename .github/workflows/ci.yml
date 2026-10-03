@@ -1,4 +1,4 @@
-name: savannah a Clinic CI Pipeline
+name: Savannah Clinic CI/CD Pipeline
 
 on:
   push:
@@ -27,3 +27,13 @@ jobs:
     - name: Run Pytest Suite
       run: |
         pytest -v
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Trigger Render Deploy Hook
+      run: |
+        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
