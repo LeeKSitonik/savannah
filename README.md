@@ -1,12 +1,12 @@
 # Savannah Clinic Booking System
 
 **Fly.io Deployment:**
-* **Live API:** [https://savannah.fly.dev](https://savannah.fly.dev)  
-* **Documentation:** [https://savannah.fly.dev/docs](https://savannah.fly.dev/docs)
+* **Live API:** (https://savannah.fly.dev)  
+* **Documentation:** (https://savannah.fly.dev/docs)
 
 **Render Deployment:**
-* **Live API:** [https://savannah-9ijk.onrender.com](https://savannah-9ijk.onrender.com)  
-* **Documentation:** [https://savannah-9ijk.onrender.com/docs](https://savannah-9ijk.onrender.com/docs)
+* **Live API:** (https://savannah-9ijk.onrender.com)  
+* **Documentation:** (https://savannah-9ijk.onrender.com/docs)
 
 A robust FastAPI microservice for managing appointment scheduling, doctor availability, cancellations, and rescheduling with persistent SQLite storage. Designed for containerized deployment and local development via Docker Compose.
 
@@ -152,14 +152,18 @@ Since standard cloud containers feature ephemeral storage, local SQLite database
 
 ---
 
-## Continuous Integration (CI/CD)
+## Continuous Integration & Continuous Deployment (CI/CD)
 
-The project includes an automated GitHub Actions pipeline (`.github/workflows/ci.yml`) that executes on every `push` and `pull_request` targeting the `main` branch.
+### What the Pipeline Does
+The automated GitHub Actions workflow (`.github/workflows/ci.yml`) acts as an automated quality gate and deployment manager for the application. Upon execution, it performs the following steps:
+1. **Checks out** the latest application codebase.
+2. **Sets up** an isolated Python 3.11 environment.
+3. **Installs** all project dependencies listed in `requirements.txt`.
+4. **Executes** the full automated test suite (`pytest -v`).
+5. **Deploys** the containerized application to Fly.io using the official `superfly/flyctl-actions` if all automated tests pass successfully.
 
-**Workflow Steps:**
-1. Code checkout.
-2. Python environment setup (`3.11`).
-3. Dependency installation (`requirements.txt`).
-4. Automated test execution (`pytest -v`).
-
-Deployments and merges are gated to ensure they are only permitted if all automated unit tests pass successfully.
+### Deployment Trigger & Mechanisms
+* **Trigger Branch:** The **`main`** branch.
+* **How Deployment is Triggered:**
+  * **Direct Pushes:** Any code pushed directly to the `main` branch automatically triggers the workflow, runs the test suite, and executes a production deployment to Fly.io.
+  * **Pull Requests / Merges:** Opening a Pull Request targeting `main` triggers the CI test suite to verify changes. Once approved and merged into `main`, the pipeline runs and automatically triggers the production deployment using the `FLY_API_TOKEN` configured in GitHub Repository Secrets.
