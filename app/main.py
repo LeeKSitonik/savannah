@@ -9,7 +9,7 @@ from app.routers import doctors, appointments
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="savannah a Clinic Booking System")
+app = FastAPI(title="Savannah Clinic Booking System")
 
 # Register Routers
 app.include_router(doctors.router)
