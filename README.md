@@ -10,6 +10,7 @@
 **Render Deployment:**
 * **Live API:** (https://savannah-9ijk.onrender.com)  
 * **Documentation:** (https://savannah-9ijk.onrender.com/docs)
+* **Storage Note:** Non-persistent database storage (ephemeral filesystem; database resets on container restarts).
 
 A robust FastAPI microservice for managing appointment scheduling, doctor availability, cancellations, and rescheduling with persistent SQLite storage. Designed for containerized deployment and local development via Docker Compose.
 
