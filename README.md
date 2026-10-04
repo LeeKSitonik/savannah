@@ -1,6 +1,9 @@
 
 # Savannah Clinic Booking System
 
+**GitHub repository:**
+(https://github.com/Simsade/savannah.git)
+
 **Fly.io Deployment:**
 * **Live API:** (https://savannah.fly.dev)  
 * **Documentation:** (https://savannah.fly.dev/docs)
@@ -19,8 +22,8 @@ In designing the backend for the clinic, I prioritized simplicity, data integrit
 
 ### Database Choice: SQLite
 I opted for **SQLite** managed via SQLAlchemy. 
-* **Reasoning:** For a starting clinic with only 5 doctors[cite: 1], spinning up a heavy, managed RDBMS like PostgreSQL introduces unnecessary cost and infrastructure overhead. SQLite is serverless, blazing fast, and handles our expected read/write volume perfectly.
-* **Trade-off:** The main drawback of SQLite in the cloud is that standard containers are ephemeral, meaning the database resets on every deployment. To solve this without migrating to a remote database, I mounted a **Fly.io Persistent Volume** (`/var/data`). This requires a slightly more complex deployment configuration but keeps the infrastructure lean and completely free.
+* **Reasoning:** For a starting clinic with only 5 doctors[cite: 1], spinning up a heavy, managed RDBMS like PostgreSQL introduces unnecessary cost and infrastructure overhead. SQLite is serverless, fast, and handles our expected read/write volume perfectly.
+* **Trade-off:** The main drawback of SQLite in the cloud is that standard containers are temporary, meaning the database resets on every deployment. To solve this without migrating to a remote database, I mounted a **Fly.io Persistent Volume** (`/var/data`). This requires a slightly more complex deployment configuration but keeps the infrastructure light and completely free.
 
 ### Working-Hours & Slot Strategy
 * **Slot Logic:** The prompt requires 30-minute slots[cite: 1, 3]. Instead of pre-generating thousands of "available slot" records in the database (which causes database bloat), I calculate availability dynamically[cite: 3]. The system takes the doctor's working hours, generates all possible 30-minute blocks, queries the database for existing active appointments, and subtracts them to return the remaining free slots[cite: 3].
